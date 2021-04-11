@@ -1,0 +1,20 @@
+{:deps {org.raml/webapi-parser {:mvn/version "0.5.0"}
+        metosin/jsonista {:mvn/version "0.3.1"}}
+ :paths ["src" "classes"]
+ :mvn/repos { "jitpack" {:url "https://jitpack.io"}
+             "muley" {:url "https://repository-master.mulesoft.org/nexus/content/repositories/releases"}}
+ :aliases {:depstar
+           {:replace-deps
+            {com.github.seancorfield/depstar {:mvn/version "2.0.206"}}
+            :ns-default hf.depstar
+            :exec-fn hf.depstar/uberjar
+            :exec-args {
+                        :version "1.0.0"
+                        :group-id "redpill-linpro"
+                        :artifact-id "raml-slurm"
+                        :sync-pom true
+                        :jar app.jar
+                        :aot true
+                        :compile-ns [slurm]
+                        :main-class "slurm"}}}
+ }
