@@ -12,3 +12,4 @@ extract:
 	podman create --name slurm-extract slurm-build
 	podman cp slurm-extract:/app ./
 	podman rm slurm-extract
+	mv ./app ./slurm
