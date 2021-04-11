@@ -19,14 +19,15 @@ To build an uberjar with clojure, install [clojure](https://clojure.org) (>= 1.1
 ```
 clj -X:depstar
 ```
+This will build an uberjar called `app.jar`. Rename it to `slurm.jar` and go!
 
 ## run
 
 ### native-image
 ```
-$ ./app file-list.txt output-file.log
+$ ./slurm file-list.txt output-file.log
 ```
 ### uberjar
 ```
-$ java -jar app.jar file-list.txt output-file.log
+$ java -jar slurm.jar file-list.txt output-file.log
 ```
