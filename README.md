@@ -1,4 +1,5 @@
 # raml-slurm
+[![cc0](https://licensebuttons.net/p/zero/1.0/80x15.png)](http://creativecommons.org/publicdomain/zero/1.0/)
 
 raml slurper and model validator
 
