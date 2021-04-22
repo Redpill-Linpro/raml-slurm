@@ -37,14 +37,14 @@
 (defn validate-file [f]
   (try
     (as-> (clojure.core/slurp f) v
-    (split-lines v)
-    (map to-url v)
-    (filter some? v)
-    (doall (map validate-raml v))
-    (j/write-value-as-string v))
+      (split-lines v)
+      (map to-url v)
+      (filter some? v)
+      (doall (map validate-raml v))
+      (j/write-value-as-string v))
     (catch java.io.FileNotFoundException e
       (format "File %s not found. Check spelling." f))))
-    
+
 (def usage-str "usage: slurm infile outfile\n
   slurm will attempt to read infile and validate each file/URL per line.\n
   if an outfile is supplied it will try to write the results there.")  
