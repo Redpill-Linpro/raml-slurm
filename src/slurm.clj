@@ -4,6 +4,8 @@
             [jsonista.core :as j])
   (:gen-class))
 
+(set! *warn-on-reflection* true)
+
 (defn to-url [s]
   (try
     (io/as-url s)
@@ -19,7 +21,7 @@
                   :targetproperty (. %1 targetProperty)
                   :validationid (. %1 validationId)
                   })]
-  (map fun (seq results))))
+  (doall (map fun (seq results)))))
 
 (defn validate-raml [s]
   (-> (str s)
@@ -28,22 +30,22 @@
       (webapi.Raml10/validate)
       (. get)
       (#(do {
-             :url s
+             :url (str s)
              :model (str (. %1 profile))
              :valid (. %1 conforms)
              :results (parse-results (. %1 results))
              }))))
 
 (defn validate-file [f]
-  (try
+  (doall (try
     (as-> (clojure.core/slurp f) v
       (split-lines v)
       (map to-url v)
       (filter some? v)
-      (doall (map validate-raml v))
+      (map validate-raml v)
       (j/write-value-as-string v))
     (catch java.io.FileNotFoundException e
-      (format "File %s not found. Check spelling." f))))
+      (format "File %s not found. Check spelling." f)))))
 
 (def usage-str "usage: slurm infile outfile\n
   slurm will attempt to read infile and validate each file/URL per line.\n
