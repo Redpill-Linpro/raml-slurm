@@ -9,6 +9,18 @@
     (io/as-url s)
     (catch java.net.MalformedURLException e nil)))
 
+(defn parse-results [results]
+  (let [fun #(do {:level (. %1 level)
+                  :location (. %1 location)
+                  :message (. %1 message)
+                  :position (. %1 position)
+;                  :source (. %1 source) ; uncomment this if you want a full Scala stack trace
+                  :targetnode (. %1  targetNode)
+                  :targetproperty (. %1 targetProperty)
+                  :validationid (. %1 validationId)
+                  })]
+    (map fun (seq results))))
+
 (defn validate-raml [s]
   (-> (str s)
       (webapi.Raml10/parse)
@@ -19,7 +31,7 @@
              :url s
              :model (str (. %1 profile))
              :valid (. %1 conforms)
-             :results (. %1 results)
+             :results (parse-results (. %1 results))
              }))))
 
 (defn validate-file [f]
