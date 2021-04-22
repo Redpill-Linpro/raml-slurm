@@ -11,17 +11,18 @@
     (io/as-url s)
     (catch java.net.MalformedURLException e nil)))
 
+(defn to-obj [^amf.client.validate.ValidationResult result]
+  {:level ^String (.level result)
+                  :location (some-> (.location result) (. get ) str)
+                  :message ^String (.message result)
+                  :position (str (.position result))
+;                  :source (.source %1) ; uncomment this if you want a full Scala stack trace
+                  :targetnode ^String (.targetNode result)
+                  :targetproperty ^String (.targetProperty result)
+                  :validationid ^String (.validationId result)
+                  })
 (defn parse-results [results]
-  (let [fun #(do {:level (. %1 level)
-                  :location (some-> (. %1 location) (. get ) str)
-                  :message (. %1 message)
-                  :position (str (. %1 position))
-;                  :source (. %1 source) ; uncomment this if you want a full Scala stack trace
-                  :targetnode (. %1  targetNode)
-                  :targetproperty (. %1 targetProperty)
-                  :validationid (. %1 validationId)
-                  })]
-  (doall (map fun (seq results)))))
+  (doall (map to-obj (seq results))))
 
 (defn validate-raml [s]
   (-> (str s)
@@ -31,9 +32,9 @@
       (. get)
       (#(do {
              :url (str s)
-             :model (str (. %1 profile))
-             :valid (. %1 conforms)
-             :results (parse-results (. %1 results))
+             :model (str (.profile ^amf.client.validate.ValidationReport %1))
+             :valid (.conforms ^amf.client.validate.ValidationReport %1)
+             :results (parse-results (.results ^amf.client.validate.ValidationReport %1))
              }))))
 
 (defn validate-file [f]
