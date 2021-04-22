@@ -9,7 +9,7 @@
             :ns-default hf.depstar
             :exec-fn hf.depstar/uberjar
             :exec-args {
-                        :version "1.0.1"
+                        :version "1.0.2"
                         :group-id "redpill-linpro"
                         :artifact-id "raml-slurm"
                         :sync-pom true
