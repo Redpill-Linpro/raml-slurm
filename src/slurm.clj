@@ -11,15 +11,15 @@
 
 (defn parse-results [results]
   (let [fun #(do {:level (. %1 level)
-                  :location (. %1 location)
+                  :location (some-> (. %1 location) (. get ) str)
                   :message (. %1 message)
-                  :position (. %1 position)
+                  :position (str (. %1 position))
 ;                  :source (. %1 source) ; uncomment this if you want a full Scala stack trace
                   :targetnode (. %1  targetNode)
                   :targetproperty (. %1 targetProperty)
                   :validationid (. %1 validationId)
                   })]
-    (map fun (seq results))))
+  (map fun (seq results))))
 
 (defn validate-raml [s]
   (-> (str s)
